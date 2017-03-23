@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CollistionDetector : MonoBehaviour {
 
-    public GameObject wall;
     public GameObject character;
 
 	// Use this for initialization
@@ -21,7 +20,7 @@ public class CollistionDetector : MonoBehaviour {
     {
         if (col.gameObject.name == character.name)
         {
-            Destroy(wall);
+            Destroy(gameObject);
         }
         
     }
