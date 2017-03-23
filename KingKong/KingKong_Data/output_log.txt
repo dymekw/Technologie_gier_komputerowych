@@ -21,7 +21,7 @@ Platform assembly: C:\Users\Wojciech\Desktop\TGK\KingKong\KingKong_Data\Managed\
 Loading C:\Users\Wojciech\Desktop\TGK\KingKong\KingKong_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
 Platform assembly: C:\Users\Wojciech\Desktop\TGK\KingKong\KingKong_Data\Managed\Destruction.dll (this message is harmless)
 Loading C:\Users\Wojciech\Desktop\TGK\KingKong\KingKong_Data\Managed\Destruction.dll into Unity Child Domain
-- Completed reload, in  0.104 seconds
+- Completed reload, in  0.180 seconds
 Platform assembly: C:\Users\Wojciech\Desktop\TGK\KingKong\KingKong_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Wojciech\Desktop\TGK\KingKong\KingKong_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 3286x1080 at 0,0
@@ -29,6 +29,54 @@ desktop: 1920x1080 60Hz; virtual: 3286x1080 at 0,0
 XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.849107 ms
+UnloadTime: 2.225413 ms
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 173fc -> priority: 1 
+  Thread -> id: 32a54 -> priority: 1 
+H
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(global): (5.0, 1.0, -2.0)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(local): (-0.5, 0.0, -0.2)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+V
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(global): (-1.9, 0.0, -5.0)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(local): (-0.2, -0.5, 0.5)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+H
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(global): (-5.0, 1.0, -3.4)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(local): (0.5, 0.0, -0.3)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+V
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(global): (-2.2, 1.0, 5.0)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Kolizja(local): (-0.2, 0.0, -0.5)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
