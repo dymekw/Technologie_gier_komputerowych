@@ -7,10 +7,11 @@ public class CollistionDetector : MonoBehaviour {
     public GameObject character;
     public GameObject destroyedWall;
     public GameObject wall;
+
     private Vector3 offset = new Vector3(0, 0.01f, 0);
     private Vector3 rotation = new Vector3(1f, 1f, 1f);
-
-    public Renderer rend;
+    private Renderer rend;
+    private const float HOLE_WIDTH = 2.5f;
 
     // Use this for initialization
     void Start () {
@@ -35,33 +36,33 @@ public class CollistionDetector : MonoBehaviour {
         }
         else
         {
-            float holeWidth = 1f / Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
+            float holeWidthLocal = HOLE_WIDTH / Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
 
             float collisionPoint = getCollisionPoint(col);
             float normalizedCollisionPoint = collisionPoint;
 
-            bool axis = splitVertically(col);
-            Debug.Log("Vertical: " + axis);
-
-            if (collisionPoint - holeWidth > -0.5f)
+            if (collisionPoint - holeWidthLocal/2 <= -0.5f)
             {
-                instansiateWall(-0.5f, collisionPoint - holeWidth, axis);
-            } else
-            {
-                normalizedCollisionPoint = -0.5f + holeWidth;
+                normalizedCollisionPoint = -0.5f + holeWidthLocal/2;
             }
-            if (collisionPoint + holeWidth < 0.5f)
+            else if (collisionPoint + holeWidthLocal/2 >= 0.5f)
             {
-                instansiateWall(collisionPoint + holeWidth, 0.5f, axis);
-            } else
-            {
-                normalizedCollisionPoint = 0.5f - holeWidth;
+                normalizedCollisionPoint = 0.5f - holeWidthLocal/2;
             }
 
-            float holeBegin = normalizedCollisionPoint - holeWidth;
-            float holeEnd = normalizedCollisionPoint + holeWidth;
+            float holeBegin = normalizedCollisionPoint - holeWidthLocal/2;
+            float holeEnd = normalizedCollisionPoint + holeWidthLocal/2;
 
-            instansiateDestroyedWall(holeBegin, holeEnd, axis);
+            instansiateDestroyedWall(holeBegin, holeEnd);
+
+            if (holeBegin > -0.5f)
+            {
+                instantiateWall(-0.5f, holeBegin);
+            }
+            if (holeEnd < 0.5f)
+            {
+                instantiateWall(holeEnd, 0.5f);
+            }
         }
 
         Destroy(gameObject);       
@@ -69,48 +70,27 @@ public class CollistionDetector : MonoBehaviour {
 
     bool shouldBeWholeDestroyed()
     {
-        return transform.lossyScale.x * transform.lossyScale.z < 1;
+        return transform.lossyScale.x * transform.lossyScale.z <= HOLE_WIDTH * 1f;
     }
 
     float getCollisionPoint(Collision col)
     {
-        Vector3 v = transform.InverseTransformPoint(col.contacts[0].point);
-        if (v.z == 0.5f || v.z == -0.5f)
+        Vector3 mean = new Vector3();
+        foreach (ContactPoint p in col.contacts)
         {
-            return v.x;
+            mean += p.point;
         }
-        return v.z;
+
+        mean /= col.contacts.Length;
+        mean = transform.InverseTransformPoint(mean);
+
+        return mean.x;
     }
 
-    bool splitVertically(Collision col)
+    GameObject instantiateWall(float begin, float end)
     {
-        Vector3 v = transform.InverseTransformPoint(col.contacts[0].point);
-
-        if ((v.z == 0.5f || v.z == -0.5f) && transform.lossyScale.z <= transform.lossyScale.x)
-        {
-            return true;
-        }
-        if ((v.x == 0.5f || v.x == -0.5f) && transform.lossyScale.z <= transform.lossyScale.x)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    GameObject instansiateWall(float begin, float end, bool splitVer)
-    {
-        Vector3 position;
-        Vector3 scale;
-
-        if (splitVer)
-        {
-            position = new Vector3(gameObject.transform.lossyScale.x * (end + begin) / 2, 0, 0);
-            scale = new Vector3((end - begin) * gameObject.transform.lossyScale.x, gameObject.transform.lossyScale.y, gameObject.transform.lossyScale.z);
-        } else
-        {
-            position = new Vector3(0,0, gameObject.transform.lossyScale.z * (end + begin) / 2);
-            scale = new Vector3(gameObject.transform.lossyScale.x, gameObject.transform.lossyScale.y, (end - begin) * gameObject.transform.lossyScale.z);
-        }
+        Vector3 position = getNewPosition(begin, end);
+        Vector3 scale = getNewScale(begin, end);
 
         GameObject newWall = Instantiate(wall, transform.position + position, transform.rotation);
         newWall.transform.localScale = scale;
@@ -120,25 +100,29 @@ public class CollistionDetector : MonoBehaviour {
         return newWall;
     }
 
-    GameObject instansiateDestroyedWall(float begin, float end, bool splitVer)
+    GameObject instansiateDestroyedWall(float begin, float end)
     {
-        Vector3 position;
-        Vector3 scale;
-
-        if (splitVer)
-        {
-            position = new Vector3(gameObject.transform.lossyScale.x * (end + begin) / 2, 0, 0);
-            scale = new Vector3((end - begin) * gameObject.transform.lossyScale.x, gameObject.transform.lossyScale.y, gameObject.transform.lossyScale.z);
-        }
-        else
-        {
-            position = new Vector3(0, 0, gameObject.transform.lossyScale.z * (end + begin) / 2);
-            scale = new Vector3(gameObject.transform.lossyScale.x, gameObject.transform.lossyScale.y, (end - begin) * gameObject.transform.lossyScale.z);
-        }
+        Vector3 position = getNewPosition(begin, end);
+        Vector3 scale = getNewScale(begin, end);
 
         GameObject newDestroyedWall = Instantiate(destroyedWall, transform.position + position + offset, transform.rotation);
         newDestroyedWall.transform.localScale = scale;
         newDestroyedWall.transform.Rotate(rotation);
         return newDestroyedWall;
+    }
+
+    Vector3 getNewPosition(float begin, float end)
+    {
+        float coef = (end + begin) / 2;
+        float angle = (360-transform.rotation.eulerAngles.y) * Mathf.Deg2Rad;
+        Vector3 rot = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+
+        return Vector3.Scale(new Vector3(transform.lossyScale.x * coef, 0, transform.lossyScale.x * coef), rot);
+    }
+
+    Vector3 getNewScale(float begin, float end)
+    {
+        Vector3 coef = new Vector3(gameObject.transform.lossyScale.x, gameObject.transform.lossyScale.y, gameObject.transform.lossyScale.z);
+        return Vector3.Scale(new Vector3(end - begin, 1, 1), coef);
     }
 }
