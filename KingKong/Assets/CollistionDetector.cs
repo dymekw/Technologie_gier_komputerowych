@@ -8,14 +8,12 @@ public class CollistionDetector : MonoBehaviour {
     public GameObject destroyedWall;
     public GameObject wall;
 
-    private Vector3 offset = new Vector3(0, 0.01f, 0);
-    private Vector3 rotation = new Vector3(1f, 1f, 1f);
-    private Renderer rend;
+    private Vector3 offset = new Vector3(0, 0.05f, 0);
+    private Vector3 rotation = new Vector3(5f, 5f, 5f);
     private const float HOLE_WIDTH = 2.5f;
 
     // Use this for initialization
     void Start () {
-        rend = GetComponent<Renderer>();
     }
 	
 	// Update is called once per frame
@@ -95,15 +93,13 @@ public class CollistionDetector : MonoBehaviour {
         GameObject newWall = Instantiate(wall, transform.position + position, transform.rotation);
         newWall.transform.localScale = scale;
 
-        rend.material.SetTextureScale("_MainTex", scale);
-
         return newWall;
     }
 
     GameObject instansiateDestroyedWall(float begin, float end)
     {
         Vector3 position = getNewPosition(begin, end);
-        Vector3 scale = getNewScale(begin, end);
+        Vector3 scale = getNewScale(begin, end) * 0.99f;
 
         GameObject newDestroyedWall = Instantiate(destroyedWall, transform.position + position + offset, transform.rotation);
         newDestroyedWall.transform.localScale = scale;
