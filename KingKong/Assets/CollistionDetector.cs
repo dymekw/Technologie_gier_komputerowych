@@ -21,49 +21,54 @@ public class CollistionDetector : MonoBehaviour {
 		
 	}
 
-    void OnCollisionEnter(Collision col)
+    void OnCollisionStay(Collision col)
     {
-        if (col.gameObject.name != character.name)
-            return;
-
-        if (shouldBeWholeDestroyed())
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            GameObject clone = Instantiate(destroyedWall, transform.position + offset, transform.rotation);
-            clone.transform.localScale = gameObject.transform.localScale;
-            clone.transform.Rotate(rotation);
-        }
-        else
-        {
-            float holeWidthLocal = HOLE_WIDTH / Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
 
-            float collisionPoint = getCollisionPoint(col);
-            float normalizedCollisionPoint = collisionPoint;
 
-            if (collisionPoint - holeWidthLocal/2 <= -0.5f)
+            if (col.gameObject.name != character.name)
+                return;
+
+            if (shouldBeWholeDestroyed())
             {
-                normalizedCollisionPoint = -0.5f + holeWidthLocal/2;
+                GameObject clone = Instantiate(destroyedWall, transform.position + offset, transform.rotation);
+                clone.transform.localScale = gameObject.transform.localScale;
+                clone.transform.Rotate(rotation);
             }
-            else if (collisionPoint + holeWidthLocal/2 >= 0.5f)
+            else
             {
-                normalizedCollisionPoint = 0.5f - holeWidthLocal/2;
+                float holeWidthLocal = HOLE_WIDTH / Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
+
+                float collisionPoint = getCollisionPoint(col);
+                float normalizedCollisionPoint = collisionPoint;
+
+                if (collisionPoint - holeWidthLocal / 2 <= -0.5f)
+                {
+                    normalizedCollisionPoint = -0.5f + holeWidthLocal / 2;
+                }
+                else if (collisionPoint + holeWidthLocal / 2 >= 0.5f)
+                {
+                    normalizedCollisionPoint = 0.5f - holeWidthLocal / 2;
+                }
+
+                float holeBegin = normalizedCollisionPoint - holeWidthLocal / 2;
+                float holeEnd = normalizedCollisionPoint + holeWidthLocal / 2;
+
+                instansiateDestroyedWall(holeBegin, holeEnd);
+
+                if (holeBegin > -0.5f)
+                {
+                    instantiateWall(-0.5f, holeBegin);
+                }
+                if (holeEnd < 0.5f)
+                {
+                    instantiateWall(holeEnd, 0.5f);
+                }
             }
 
-            float holeBegin = normalizedCollisionPoint - holeWidthLocal/2;
-            float holeEnd = normalizedCollisionPoint + holeWidthLocal/2;
-
-            instansiateDestroyedWall(holeBegin, holeEnd);
-
-            if (holeBegin > -0.5f)
-            {
-                instantiateWall(-0.5f, holeBegin);
-            }
-            if (holeEnd < 0.5f)
-            {
-                instantiateWall(holeEnd, 0.5f);
-            }
-        }
-
-        Destroy(gameObject);       
+            Destroy(gameObject);
+        }  
     }
 
     bool shouldBeWholeDestroyed()
