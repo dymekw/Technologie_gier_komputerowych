@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour {
+public class CharacterController : MonoBehaviour
+{
 
     private float speed = 10.0F;
     private float rotationSpeed = 100.0F;
 
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         float translationV = Input.GetAxis("Vertical") * speed;
         float translationH = Input.GetAxis("Horizontal") * speed;
         float rotation = Input.GetAxis("Mouse X") * rotationSpeed;
@@ -22,5 +25,10 @@ public class CharacterController : MonoBehaviour {
         rotation *= Time.deltaTime;
         transform.Translate(translationH, 0, translationV);
         transform.Rotate(0, rotation, 0);
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        ExampleGUIAspectsController.health_bar.IncrimentBar(-1);
     }
 }

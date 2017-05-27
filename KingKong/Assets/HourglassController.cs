@@ -17,7 +17,7 @@ public class HourglassController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hourglass.transform.Rotate(1, 0, 1);
+        hourglass.transform.Rotate(1.1f, 0.1f, -0.9f);
     }
 
     void OnCollisionEnter(Collision col)

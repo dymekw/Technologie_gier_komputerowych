@@ -6,6 +6,7 @@ public class HeartController : MonoBehaviour {
 
     public GameObject heart;
     public GameObject character;
+    public static int addHealth = 20;
 
     // Use this for initialization
     void Start () {
@@ -21,7 +22,7 @@ public class HeartController : MonoBehaviour {
     {
         if (col.gameObject.name != character.name)
             return;
-
+        ExampleGUIAspectsController.health_bar.IncrimentBar(addHealth);
         Destroy(heart);
     }
 }
