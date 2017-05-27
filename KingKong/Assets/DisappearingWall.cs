@@ -13,10 +13,13 @@ public class DisappearingWall : MonoBehaviour {
     void Start () {
         InvokeRepeating("ChangeState", Random.Range(5, 15), Random.Range(5,20));
 
-        if (Random.Range(0,1) == 0)
+        if (Random.Range(0,2) == 0)
         {
-            isVisible = false;
             wall.transform.Translate(new Vector3(0, -2.5f, 0));
+            isVisible = false;
+        } else
+        {
+            isVisible = true;
         }
     }
 	
