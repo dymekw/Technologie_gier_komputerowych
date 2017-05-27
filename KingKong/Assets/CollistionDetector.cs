@@ -7,6 +7,7 @@ public class CollistionDetector : MonoBehaviour {
     public GameObject character;
     public GameObject destroyedWall;
     public GameObject wall;
+    public bool isDestroyable = true;
 
     private Vector3 offset = new Vector3(0, 0.05f, 0);
     private Vector3 rotation = new Vector3(5f, 5f, 5f);
@@ -23,7 +24,7 @@ public class CollistionDetector : MonoBehaviour {
 
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.name != character.name)
+        if (col.gameObject.name != character.name || !isDestroyable)
             return;
 
         if (shouldBeWholeDestroyed())
