@@ -8,10 +8,10 @@ public class CollistionDetector : MonoBehaviour {
     public GameObject destroyedWall;
     public GameObject wall;
     public bool isDestroyable = true;
-    int wallLife;
+    private float wallLife;
     private Vector3 offset = new Vector3(0, 0.05f, 0);
     private Vector3 rotation = new Vector3(5f, 5f, 5f);
-    private const float HOLE_WIDTH = 2.5f;
+    private const float HOLE_WIDTH = 1.5f;
 
     // Use this for initialization
     void Start () {
@@ -57,11 +57,11 @@ public class CollistionDetector : MonoBehaviour {
 
     void OnCollisionStay(Collision col)
     {
-        if (Input.GetKeyDown(KeyCode.C) && wallLife > 0.0)
+        if (Input.GetMouseButton(0) && wallLife > 0.0)
         {
-            wallLife -= 1;
+            wallLife -= 0.05f;
         }
-        else if(wallLife == 0)
+        else if(wallLife <= 0)
         {
 
             if (col.gameObject.name != character.name || !isDestroyable)
@@ -75,7 +75,7 @@ public class CollistionDetector : MonoBehaviour {
             }
             else
             {
-                float holeWidthLocal = HOLE_WIDTH / Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
+                float holeWidthLocal = 0.95f * HOLE_WIDTH / Mathf.Max(transform.lossyScale.x, transform.lossyScale.z);
 
                 float collisionPoint = getCollisionPoint(col);
                 float normalizedCollisionPoint = collisionPoint;

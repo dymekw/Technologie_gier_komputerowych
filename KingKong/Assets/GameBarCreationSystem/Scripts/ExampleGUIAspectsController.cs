@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 class ExampleGUIAspectsController : MonoBehaviour
 {
     public static HealthSystem health_bar;
+    public static HealthSystem mouse_hold_bar;
 
     public Rect HealthBarDimens;
     public bool VerticleHealthBar;
@@ -21,11 +22,13 @@ class ExampleGUIAspectsController : MonoBehaviour
     public void OnGUI()
     {
         health_bar.DrawBar();
+        mouse_hold_bar.DrawBar();
     }
 
     public void Update()
     {
         health_bar.Update();
+        mouse_hold_bar.Update();
         if (health_bar.getCurrentValue() <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
