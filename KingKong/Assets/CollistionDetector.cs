@@ -57,7 +57,7 @@ public class CollistionDetector : MonoBehaviour {
 
     void OnCollisionStay(Collision col)
     {
-        if (Input.GetMouseButton(0) && wallLife > 0.0)
+        if (Input.GetMouseButton(0) && wallLife > 0.0 && !ExampleGUIAspectsController.isBlocked())
         {
             wallLife -= 0.05f;
         }
