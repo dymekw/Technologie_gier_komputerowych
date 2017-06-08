@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-
+	Animator anim;
     private float speed = 10.0F;
     private float rotationSpeed = 100.0F;
     public Rigidbody rb;
@@ -13,11 +13,24 @@ public class CharacterController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+		anim = GetComponentInChildren<Animator>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+		if (Input.GetMouseButtonDown(0))
+        {
+            anim.Play("Attack");
+        }
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) )
+        {
+            anim.Play("Walk");
+        }
+        else if (Input.GetKeyDown(KeyCode.Space)){
+            anim.Play("jump");
+        }
         float rotation = Input.GetAxis("Mouse X") * rotationSpeed;
         rotation *= Time.deltaTime;
         transform.Rotate(0, rotation, 0);
