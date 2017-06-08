@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CollistionDetector : MonoBehaviour {
 
+    public GameObject dust;
     public GameObject character;
     public GameObject destroyedWall;
     public GameObject wall;
     public bool isDestroyable = true;
+   
     private float wallLife;
     private Vector3 offset = new Vector3(0, 0.05f, 0);
     private Vector3 rotation = new Vector3(5f, 5f, 5f);
@@ -15,6 +17,7 @@ public class CollistionDetector : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+     
         wallLife = (int)Random.Range(1.0f, 6.0f);
         //Vector3 scale = wall.transform.localScale;
         //scale.z += (wallLife/1000) ;
@@ -63,7 +66,6 @@ public class CollistionDetector : MonoBehaviour {
         }
         else if(wallLife <= 0)
         {
-
             if (col.gameObject.name != character.name || !isDestroyable)
                 return;
 
@@ -142,7 +144,7 @@ public class CollistionDetector : MonoBehaviour {
     {
         Vector3 position = getNewPosition(begin, end);
         Vector3 scale = getNewScale(begin, end) * 0.99f;
-
+        Instantiate(dust, transform.position + position + offset, transform.rotation);
         GameObject newDestroyedWall = Instantiate(destroyedWall, transform.position + position + offset, transform.rotation);
         newDestroyedWall.transform.localScale = scale;
         newDestroyedWall.transform.Rotate(rotation);
