@@ -20,13 +20,14 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (Input.GetMouseButton(0) && !ExampleGUIAspectsController.isBlocked())
-        {
-            anim.Play("Attack");
-        }
+		
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) )
         {
             anim.Play("Walk");
+        }
+        else if (Input.GetMouseButton(0) && !ExampleGUIAspectsController.isBlocked())
+        {
+            anim.Play("Attack");
         }
         else if (Input.GetKeyDown(KeyCode.Space)){
             anim.Play("jump");
